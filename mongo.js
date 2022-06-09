@@ -10,29 +10,25 @@ const password = process.argv[2]
 const url = `mongodb+srv://fullstack:${password}@cluster0.xeqfx5u.mongodb.net/?retryWrites=true&w=majority`
 
 const contactSchema = new mongoose.Schema({
-   name: String,
-   number: String 
+  name: String,
+  number: String 
 })
 
 const Contact = mongoose.model('Contact', contactSchema)
 
-mongoose 
-    .connect(url)
-    .then(res => {
-        console.log('connected')
+mongoose .connect(url)
+  .then(() => {
+    console.log('connected')
 
-        const contact = new Contact({
-            name: process.argv[3],
-            number: process.argv[4]
-        })
-
-        return contact.save()
+    const contact = new Contact({
+      name: process.argv[3],
+      number: process.argv[4]
     })
-    .then(() => {
-        Contact.find({}).then(res => {
-            res.forEach(cnt => console.log(cnt))
-            return mongoose.connection.close()
-        })
-    }).catch((err) => console.log(err))
 
-    
+    return contact.save()})
+  .then(() => {
+    Contact.find({})
+      .then(res => {
+        res.forEach(cnt => console.log(cnt))
+        return mongoose.connection.close()})})
+  .catch((err) => console.log(err))
